@@ -63,7 +63,8 @@ def capsules_v0(inputs,labels, num_classes, iterations, name='CapsuleEM-V0'):
     #nets_recon = tf.layers.dense(nets_recon,units = 28*28,activation=tf.nn.relu)
     #nets_recon = tf.reshape(nets_recon,shape=[-1,28,28,1])
     
-  return activation,nets_recon```
+  return activation,nets_recon
+  ```
 
 # To do:<br> 
 <del>1. Include routing algorithm </del><br>
