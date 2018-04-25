@@ -1,4 +1,4 @@
-# ConvCapusleNets
+# VectorCapsNet
 This project implements convolutional capsule net, based on [Hinton's paper](https://arxiv.org/abs/1710.09829), <br> 
 The implementation is based on other implementations, including [capsuleEM](https://github.com/gyang274/capsulesEM), [CapsNet-Keras](https://github.com/XifengGuo/CapsNet-Keras), and [tensorflow](https://github.com/Sarasra/models). <br>
 <br>
