@@ -1,4 +1,4 @@
-"""An implementation of matrix capsules with EM routing.
+"""An implementation of capsule network.
 """
 
 from tensorflow.contrib.layers.python.layers import initializers
