@@ -261,6 +261,10 @@ def main(_):
   saver = tf.train.Saver()
 
   # create log files
+  try:
+    os.stat("./eval_log")
+  except:
+    os.mkdir("eval_log")
   minibatch_file = open("./eval_log/minibatch_error.txt", 'w')
   validation_file = open("./eval_log/validation_error.txt", 'w')
   test_file = open("./eval_log/test_error.txt","w")
