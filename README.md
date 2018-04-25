@@ -65,6 +65,11 @@ def capsules_v0(inputs,labels, num_classes, iterations, name='CapsuleEM-V0'):
     
   return activation,nets_recon
   ```
+# Output <br>
+Three files recording training,validation and test error, <br>
+minibatch_error.txt <br>
+validation_error.txt <br>
+test_error.txt <br>
 
 # To do:<br> 
 <del>1. Include routing algorithm </del><br>
