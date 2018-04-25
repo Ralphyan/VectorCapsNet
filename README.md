@@ -3,7 +3,7 @@ This project implements convolutional capsule net, based on [Hinton's paper](htt
 The implementation is based on other implementations, including [capsuleEM](https://github.com/gyang274/capsulesEM), [CapsNet-Keras](https://github.com/XifengGuo/CapsNet-Keras), and [tensorflow](https://github.com/Sarasra/models). <br>
 <br>
 It provides an easy interface for capsnet. <br>
-Library functions include: <br>
+# Library functions include: <br>
 1. create_init_capsule (create_init_capsule_v2), input is a 2D image with mutli channels, output is a 2D capsule layer, output shaoe is [None,Height, Width,capsule_channel,capsule_dim], where capsule_channel is number of capsules, capsule_dim is the length of each vector.<br>
 2. capsule_conv, input is of shape [None, Height, widtion, capsule_channel, capsule_dim], output shape is [None, Height2, widtion2, capsule_channel2, capsule_dim2], performs dynamic routing in a convolutional way. <br>
 3. capsule_fc, fully connected capsule layer<br>
@@ -32,52 +32,25 @@ def capsules_v0(inputs,labels, num_classes, iterations, name='CapsuleEM-V0'):
   with tf.variable_scope(name) as scope:
 
     # inputs [N, H, W, C] -> conv2d, 5x5, strides 2, channels 32 -> nets [N, OH, OW, 32]
-    #nets = _conv2d_wrapper(inputs, shape=[5, 5, 1, 8], strides=[1, 2, 2, 1], padding='SAME', add_bias=True, activation_fn=tf.nn.relu, name='conv1')
-    # inputs [N, H, W, C] -> conv2d, 1x1, strides 1, channels 32x(4x4+1) -> (poses, activations)
+    
     nets = capsules_init_v2(
       inputs, shape=[9, 9, 1, 32], strides=[1, 2, 2, 1], padding='SAME', output_capsule_dims=8, name='capsule_init'
     )
 
-    # --------------------------------- #
-    # another version of initial caps layer
-    #nets1 = _conv2d_wrapper(
-    #  inputs, shape=[5, 5, 1, 8], strides=[1, 2, 2, 1], padding='SAME', add_bias=True, activation_fn=tf.nn.relu,
-    #  name='conv1'
-    #)
-    # inputs [N, H, W, C] -> conv2d, 1x1, strides 1, channels 32x(4x4+1) -> (poses, activations)
-    #nets = capsules_init(
-    #  nets1, shape=[1, 1, 8, 8], strides=[1, 1, 1, 1], padding='VALID', output_capsule_dims=8, name='capsule_init'
-    #)
-    # ---------------------------------- #
-
-    #nets = capsule_dropout(nets,drop_probability=0.25)
-    # inputs: (poses, activations) -> capsule-conv 3x3x32x32x4x4, strides 2 -> (poses, activations)
+    
     nets = capsules_conv(nets, kernel_shape=[5, 5], strides=[1, 2, 2, 1], iterations=iterations, name='capsule_conv1',out_capsule_dims=16,out_capsule_channels=16)
     nets = capsule_dropout(nets,drop_probability=0.25)
-    # inputs: (poses, activations) -> capsule-conv 3x3x32x32x4x4, strides 1 -> (poses, activations)
-    #nets = capsules_conv(nets, kernel_shape=[3, 3], strides=[1, 2, 2, 1], iterations=iterations, name='capsule_conv2',out_capsule_dims=16,out_capsule_channels=32)
-    #nets = capsule_dropout(nets,drop_probability=0.25)
+   
     nets = capsules_conv(nets, kernel_shape=[3, 3], strides=[1, 1, 1, 1], iterations=iterations, name='capsule_conv3',out_capsule_dims=16, out_capsule_channels=16)
-    #nets = capsule_dropout(nets, drop_probability=0.25)
+   
     nets2 = flatten_conv_capsule(nets)
     nets = capsule_dropout(nets2,drop_probability=0.25)
-    # inputs: (poses, activations) -> capsule-fc 1x1x32x10x4x4 shared view transform matrix within each channel -> (poses, activations)
-    #nets = capsules_fc( nets, iterations=iterations, name='capsule_fc',out_capsule_dims=16,out_capsule_number=20)
-    #nets = capsule_dropout(nets,drop_probability=0.25)
+    
     nets = capsules_fc(nets, iterations=iterations, name='capsule_fc2', out_capsule_dims=16, out_capsule_number=10)
-    #nets6 = capsules_fc(nets6, iterations=iterations, name='capsule_fc2', out_capsule_dims=16, out_capsule_number=10)
-                        
-    #nets = flatten_dense_capsule(nets)
-
-    #activations = tf.layers.dense(nets,units=10,activation=tf.nn.relu)
+    
 
     activation = capsule_length(nets)
-    #nets = flatten_dense_capsule(nets)
-    #activations = tf.layers.dense(nets,units=10,activation=tf.nn.relu)
-    #activations = nets
-    #activations = tf.nn.softmax(nets7,axis=-1)
-    #activations = tf.layers.dense(nets,units=10,activation=None)
-
+   
     mask = tf.expand_dims(labels,-1)
     mask = tf.tile(mask,[1,1,16])
     mask = tf.cast(mask,tf.float32)
@@ -89,8 +62,9 @@ def capsules_v0(inputs,labels, num_classes, iterations, name='CapsuleEM-V0'):
     #nets_recon = tf.layers.dense(nets_recon,units = 1024,activation=tf.nn.relu)
     #nets_recon = tf.layers.dense(nets_recon,units = 28*28,activation=tf.nn.relu)
     #nets_recon = tf.reshape(nets_recon,shape=[-1,28,28,1])
+    
   return activation,nets_recon```
 
-To do:<br> 
+# To do:<br> 
 <del>1. Include routing algorithm </del><br>
 2. Extend the idea of dense net.
