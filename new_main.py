@@ -101,6 +101,8 @@ def main(_):
   else:
     # Extract it into np arrays.
     (train_data,train_labels),(test_data,test_labels) = tf.keras.datasets.mnist.load_data(path='mnist.npz')
+    # (train_data,train_labels),(test_data,test_labels) = tf.keras.datasets.cifar10.load_data()
+
     #train_data = extract_data(train_data_filename, 60000)
     #train_labels = extract_labels(train_labels_filename, 60000)
     #test_data = extract_data(test_data_filename, 10000)
