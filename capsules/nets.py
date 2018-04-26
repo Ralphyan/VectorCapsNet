@@ -21,7 +21,7 @@ def capsules_v0(inputs,labels, num_classes, iterations, name='CapsuleEM-V0'):
     #nets = _conv2d_wrapper(inputs, shape=[5, 5, 1, 8], strides=[1, 2, 2, 1], padding='SAME', add_bias=True, activation_fn=tf.nn.relu, name='conv1')
     # inputs [N, H, W, C] -> conv2d, 1x1, strides 1, channels 32x(4x4+1) -> (poses, activations)
     nets = capsules_init_v2(
-      inputs, shape=[9, 9, 1, 32], strides=[1, 2, 2, 1], padding='SAME', output_capsule_dims=8, name='capsule_init'
+      inputs, shape=[9, 9, inputs.shape[-1].value, 32], strides=[1, 2, 2, 1], padding='SAME', output_capsule_dims=8, name='capsule_init'
     )
 
     # --------------------------------- #
