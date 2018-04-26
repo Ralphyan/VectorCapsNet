@@ -101,6 +101,7 @@ def main(_):
   else:
     # Extract it into np arrays.
     (train_data,train_labels),(test_data,test_labels) = tf.keras.datasets.mnist.load_data(path='mnist.npz')
+    # (train_data,train_labels),(test_data,test_labels) = tf.keras.datasets.cifar10.load_data()
     if np.rank(train_data)==3:
         train_data = np.expand_dims(train_data,axis=-1)
         test_data = np.expand_dims(test_data,axis=-1)
